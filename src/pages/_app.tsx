@@ -7,14 +7,20 @@ import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
 
+// Components
+import Navbar from "~/components/Navbar";
+
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
   return (
     <SessionProvider session={session}>
+      <Navbar />
+      {/* <main className="bg-blue-200 pt-16"> */}
       <ReactQueryDevtools initialIsOpen={false} />
       <Component {...pageProps} />
+      {/* </main> */}
     </SessionProvider>
   );
 };
