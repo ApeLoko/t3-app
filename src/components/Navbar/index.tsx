@@ -1,8 +1,15 @@
 import { useState, useEffect } from "react";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 import Link from "next/link";
 import Image from "next/image";
+
+// Components
+import AccountButton from "./components/AccountButton";
+import Button from "~/components/shared/Button";
+
+// Icons
+import { PlusCircleIcon } from "@heroicons/react/24/solid";
 
 interface route {
   label: string;
@@ -10,7 +17,7 @@ interface route {
 }
 
 const ROUTES: route[] = [
-  { label: "Inicio", path: "/" },
+  { label: "Home", path: "/" },
   { label: "Workers", path: "/workers" },
   { label: "Contact", path: "/contact" },
 ];
@@ -58,13 +65,19 @@ export default function Navbar() {
           </div>
         </Link>
         <div className="flex md:order-2">
-          <button
-            type="button"
-            className="mr-3 rounded-lg bg-blue-700 px-4 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 md:mr-0"
-            onClick={sessionData ? () => void signOut() : () => void signIn()}
-          >
-            {sessionData ? "Sign out" : "Sign in"}
-          </button>
+          {sessionData ? (
+            <div className="flex gap-x-2">
+              <Button
+                label={"0 $"}
+                onClick={() => console.log("open balance modal")}
+                icon={<PlusCircleIcon className="h-6 w-6 text-white" />}
+              />
+              <AccountButton />
+            </div>
+          ) : (
+            <Button label={"Sign in"} onClick={() => void signIn()} />
+          )}
+
           <button
             data-collapse-toggle="navbar-sticky"
             type="button"
@@ -83,9 +96,9 @@ export default function Navbar() {
             >
               <path
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M1 1h15M1 7h15M1 13h15"
               />
             </svg>
