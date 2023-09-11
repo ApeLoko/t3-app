@@ -33,6 +33,15 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const session = await getServerSession(context.req, context.res, authOptions);
 
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
   const ssg = ssgHelper();
 
   await ssg.example.getSecretMessage.prefetch();
