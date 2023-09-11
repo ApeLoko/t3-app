@@ -14,9 +14,7 @@ import { api } from "~/utils/api";
 import { authOptions } from "~/server/auth";
 import { getServerSession } from "next-auth/next";
 
-const Home: NextPage<
-  InferGetServerSidePropsType<typeof getServerSideProps>
-> = () => {
+const Home = () => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
   return (
@@ -91,30 +89,30 @@ function AuthShowcase() {
   );
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  const session = await getServerSession(context.req, context.res, authOptions);
+// export async function getServerSideProps(context: GetServerSidePropsContext) {
+//   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+//   const session = await getServerSession(context.req, context.res, authOptions);
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
+//   if (!session) {
+//     return {
+//       redirect: {
+//         destination: "/",
+//         permanent: false,
+//       },
+//     };
+//   }
 
-  const ssg = ssgHelper();
+//   const ssg = ssgHelper();
 
-  await ssg.example.getSecretMessage.prefetch();
-  await ssg.example.hello.prefetch({ text: "from tRPC" });
+//   await ssg.example.getSecretMessage.prefetch();
+//   await ssg.example.hello.prefetch({ text: "from tRPC" });
 
-  return {
-    props: {
-      session,
-      trpcState: ssg.dehydrate(),
-    },
-  };
-}
+//   return {
+//     props: {
+//       session,
+//       trpcState: ssg.dehydrate(),
+//     },
+//   };
+// }
 
 export default Home;
