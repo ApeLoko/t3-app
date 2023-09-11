@@ -53,7 +53,7 @@ export default function Navbar() {
         isScrolled ? SCROLLED_STYLES : UNSCROLLED_STYLES
       }`}
     >
-      <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between  p-4">
+      <div className="max-w-screen-xxl mx-auto flex flex-wrap items-center p-4">
         <Link href="/" className="flex items-center">
           <div className="mr-3 h-8">
             <Image
@@ -64,7 +64,7 @@ export default function Navbar() {
             />
           </div>
         </Link>
-        <div className="flex md:order-2">
+        <div className="ml-auto flex md:order-2">
           {sessionData ? (
             <div className="flex gap-x-2">
               <Button
@@ -81,7 +81,7 @@ export default function Navbar() {
           <button
             data-collapse-toggle="navbar-sticky"
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 md:hidden"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none dark:hover:bg-transparent md:hidden"
             aria-controls="navbar-sticky"
             aria-expanded="false"
             onClick={() => setIsOpen((prev) => !prev)}
@@ -110,7 +110,7 @@ export default function Navbar() {
           }`}
           id="navbar-sticky"
         >
-          <ul className="mt-4 flex flex-col rounded-lg border bg-gray-900 p-4 font-medium md:mt-0 md:flex-row md:space-x-8 md:border-0 md:p-0 md:dark:bg-transparent">
+          <ul className="mt-4 flex flex-col rounded-lg bg-violet-800 p-4 font-medium md:ml-5 md:mt-0 md:flex-row md:space-x-8 md:border-0 md:p-0 md:dark:bg-transparent">
             {ROUTES.map(({ label, path }) => (
               <Link
                 key={label}
