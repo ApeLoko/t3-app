@@ -2,9 +2,21 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 
+import type {
+  GetServerSidePropsContext,
+  InferGetServerSidePropsType,
+  NextPage,
+} from "next";
+
+import { ssgHelper } from "~/server/api/ssgHelper";
 import { api } from "~/utils/api";
 
-export default function Home() {
+import { authOptions } from "~/server/auth";
+import { getServerSession } from "next-auth/next";
+
+const Home: NextPage<
+  InferGetServerSidePropsType<typeof getServerSideProps>
+> = () => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
   return (
@@ -53,7 +65,7 @@ export default function Home() {
       </main>
     </>
   );
-}
+};
 
 function AuthShowcase() {
   const { data: sessionData } = useSession();
@@ -78,3 +90,31 @@ function AuthShowcase() {
     </div>
   );
 }
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  const session = await getServerSession(context.req, context.res, authOptions);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  const ssg = ssgHelper();
+
+  await ssg.example.getSecretMessage.prefetch();
+  await ssg.example.hello.prefetch({ text: "from tRPC" });
+
+  return {
+    props: {
+      session,
+      trpcState: ssg.dehydrate(),
+    },
+  };
+}
+
+export default Home;

@@ -1,9 +1,6 @@
 import { useSession } from "next-auth/react";
 import type {
   GetServerSidePropsContext,
-  GetStaticPaths,
-  GetStaticPropsContext,
-  InferGetStaticPropsType,
   InferGetServerSidePropsType,
   NextPage,
 } from "next";
@@ -54,7 +51,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const ssg = ssgHelper();
 
   await ssg.example.getSecretMessage.prefetch();
-  // await api.example.hello.prefetch({ text: "from tRPC" });
   await ssg.example.hello.prefetch({ text: "from tRPC" });
 
   return {
