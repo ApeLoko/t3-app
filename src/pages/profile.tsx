@@ -15,16 +15,10 @@ const Profile: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = () => {
   const { data: sessionData } = useSession();
-  const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-    undefined, // no input
-    { enabled: sessionData?.user !== undefined },
-  );
 
   const { data: helloData } = api.example.hello.useQuery({ text: "from tRPC" });
 
   const { user } = sessionData ?? {};
-
-  console.log({ user, secretMessage, helloData });
 
   return (
     <div className="pt-16">
@@ -39,14 +33,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const session = await getServerSession(context.req, context.res, authOptions);
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
+  // if (!session) {
+  //   return {
+  //     redirect: {
+  //       destination: "/",
+  //       permanent: false,
+  //     },
+  //   };
+  // }
 
   const ssg = ssgHelper();
 
