@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { signOut } from "next-auth/react";
+import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { InjectedConnector } from "wagmi/connectors/injected";
 
 // Components
 import DropdownButton from "~/components/shared/DropdownButton";
@@ -8,6 +10,12 @@ import DropdownButton from "~/components/shared/DropdownButton";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 
 export default function AccountButton() {
+  const { isConnected } = useAccount();
+  const { connect } = useConnect({
+    connector: new InjectedConnector(),
+  });
+  const { disconnect } = useDisconnect();
+
   return (
     <DropdownButton
       summary={
@@ -22,6 +30,15 @@ export default function AccountButton() {
         </Link>,
         <div onClick={() => void signOut()} key="accBtnSignOut">
           Sign out
+        </div>,
+        <div
+          key="walletConnect"
+          onClick={() => {
+            isConnected ? disconnect() : connect();
+            console.log("called connect");
+          }}
+        >
+          {isConnected ? "Disconnect" : "Connect"}
         </div>,
       ]}
     />

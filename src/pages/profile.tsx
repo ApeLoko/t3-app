@@ -4,6 +4,7 @@ import type {
   InferGetServerSidePropsType,
   NextPage,
 } from "next";
+import { useAccount } from "wagmi";
 
 import { ssgHelper } from "~/server/api/ssgHelper";
 import { api } from "~/utils/api";
@@ -15,6 +16,7 @@ const Profile: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = () => {
   const { data: sessionData } = useSession();
+  const { address } = useAccount();
 
   const { data: helloData } = api.example.hello.useQuery({ text: "from tRPC" });
 
@@ -25,6 +27,7 @@ const Profile: NextPage<
       <div>{helloData ? helloData.greeting : "loading..."} </div>
       <div>name: {user?.name}</div>
       <div>email: {user?.email}</div>
+      <div>wallet address: {address}</div>
     </div>
   );
 };
